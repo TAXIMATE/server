@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from .models import *
-from team.models import *
+from taximate.team.models import *
 
-# 유저 모든 정보
+# 유저의 모든 정보
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['kakao_id', 'kakao_email', 'nickname', 'profile_image', 'team']
+        fields = '__all__'
 
 # 유저 닉네임과 사진만
 class UserSimpleSerializer(serializers.ModelSerializer):

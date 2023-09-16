@@ -7,4 +7,6 @@ class User(models.Model):
     kakao_email = models.CharField(max_length=100)
     profile_image = models.TextField(default="", null = True)
     nickname = models.CharField(max_length=100)
+    gender = models.BooleanField(null=True)
+    temperature = models.FloatField(default=36.5)
     team = models.ForeignKey(Team, null = True, related_name="all_member")
