@@ -16,8 +16,8 @@ class KakaoCallBackView(View):
     def get(self, request):
         data = {
             "grant_type" : "authorization_code",
-            "client_id" : "",
-            "redirect_uri" : "",
+            "client_id" : "d679f25e59dbc97619baf1256489b449",
+            "redirect_uri" : "http://localhost:3000/wait",
             "code" : request.GET["code"]
         }
 
