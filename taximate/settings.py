@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'team',
     'member',
+    'rest_framework',
     'rest_framework.authtoken',
-		#dj-rest-auth 관련
+    #dj-rest-auth 관련
     'dj_rest_auth',
     'dj_rest_auth.registration',
     'allauth',
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'taximate.urls'

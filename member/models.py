@@ -1,5 +1,5 @@
 from django.db import models
-from taximate.team.models import Team
+from team.models import Team
 
 # Create your models here.
 class User(models.Model):
@@ -9,4 +9,4 @@ class User(models.Model):
     nickname = models.CharField(max_length=100)
     gender = models.BooleanField(null=True)
     temperature = models.FloatField(default=36.5)
-    team = models.ForeignKey(Team, null = True, related_name="all_member")
+    team = models.ForeignKey(Team, null = True, related_name="all_member", on_delete=models.SET_NULL)

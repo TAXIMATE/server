@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from .models import *
-from taximate.team.models import *
+from .models import User
+from team.models import Team
 
 # 유저의 모든 정보
-class UserDetailSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
