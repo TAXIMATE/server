@@ -9,6 +9,7 @@ from .models import *
 # from team.serializers import *
 from rest_framework.decorators import api_view
 from django.db.models import Q
+from django.contrib import auth
 import requests
 
 # Create your views here.
@@ -33,6 +34,25 @@ class KakaoCallBackView(View):
         profile_image = user_information["properties"]["profile_image"]
         nickname = user_information["properties"]["nickname"]
 
+        if User.objects.get(kakao_id = kakao_id).DoesNotExist:
+            user = User(kakao_id = kakao_id, kakao_email = kakao_email, profile_image = profile_image, nickname = nickname)
+            user.save()
+            auth.login(request, user)
+            return Response(False, status = status.HTTP_200_OK)
+        else:
+            user = User.objects.get(kakao_id = kakao_id)
+            auth.login(request, user)
+            return Response(True, status = status.HTTP_200_OK)
         
 
+@api_view(['POST'])
+def logout(request):
+    auth.logout(request)
+    return Response(status = status.HTTP_200_OK)
 
+
+@api_view(['POST'])
+def check_gender(request):
+    user = request.user
+    user.gender = request.json()["gender"]
+    return Response(status = status.HTTP_200_OK)
