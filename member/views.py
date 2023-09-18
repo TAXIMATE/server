@@ -11,6 +11,7 @@ from rest_framework.decorators import api_view
 from django.db.models import Q
 from django.contrib import auth
 import requests
+import json
 
 # Create your views here.
 class KakaoCallBackView(View):
@@ -19,7 +20,8 @@ class KakaoCallBackView(View):
             "grant_type" : "authorization_code",
             "client_id" : "d679f25e59dbc97619baf1256489b449",
             "redirect_uri" : "http://localhost:3000/wait",
-            "code" : request.GET["code"]
+            # "code" : request.GET["code"]
+            "code" : json.loads(request.body).data.get("code")
         }
 
         kakao_token_api = "https://kauth.kakao.com/oauth/token"
