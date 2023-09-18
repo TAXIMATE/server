@@ -45,10 +45,31 @@ class KakaoCallBackView(View):
             return Response(True, status = status.HTTP_200_OK)
         
 
-@api_view(['POST'])
-def logout(request):
+# @api_view(['POST'])
+# def logout(request):
+#     auth.logout(request)
+#     return Response(status = status.HTTP_200_OK)
+
+
+# def logout(request):
+#     kakao_admin_key = "17aff4f8209625d0480d6157aba94404"
+#     logout_url = "https://kapi.kakao.com/v1/user/logout"
+#     target_id = request.user.kakao_id
+#     headers = {"Authorization": f"KakaoAK {kakao_admin_key}"}
+#     data = {"target_id_type": "user_id", "target_id": target_id}
+#     logout_res = requests.post(logout_url, headers=headers, data=data).json()
+#     logout(request)
+
+def kakao_logout(request):
+    client_id = "d679f25e59dbc97619baf1256489b449",
+    redirect_uri = "http://localhost:3000/wait",
+    
+    access_token = request.session["access_token"]
+	# 로그아웃 
+    headers = {"Authorization": f'Bearer {access_token}'}
+    logout_response = requests.post('https://kapi.kakao.com/v1/user/logout', headers=headers)
     auth.logout(request)
-    return Response(status = status.HTTP_200_OK)
+    # print(logout_response.json())
 
 
 @api_view(['POST'])
