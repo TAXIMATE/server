@@ -215,3 +215,7 @@ SIMPLE_JWT = {
 USE_L10N = False
 DATE_INPUT_FORMATS = ['%Y-%m-%d']
 TIME_INPUT_FORMATS = ['%H:%M']
+
+import pymysql
+
+pymysql.install_as_MySQLdb()
