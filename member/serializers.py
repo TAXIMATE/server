@@ -8,14 +8,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = '__all__'
 
-# 유저 닉네임과 사진만
+# 대기방에서 보여줄 유저 정보
 class UserSimpleSerializer(serializers.ModelSerializer):
     class Meta:
-        # model = User
-        fields = ['nickname', 'profile_image']
-
-
-class GenderSerializer(serializers.ModelSerializer):
-    class Meta:
-        # model = User
-        fields = ['gender']
+        model = CustomUser
+        fields = ['nickname', 'profile_image', 'gender', 'temperature']
