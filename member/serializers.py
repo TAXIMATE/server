@@ -1,21 +1,15 @@
 from rest_framework import serializers
 from .models import *
-from team.models import Team
+# from team.models import Team
 
 # 유저의 모든 정보
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = '__all__'
+        fields = ['user_id', 'kakao_id', 'profile_image', 'nickname', 'gender', 'temperature', 'team']
 
-# 유저 닉네임과 사진만
+# 대기방에서 필요한 유저 정보
 class UserSimpleSerializer(serializers.ModelSerializer):
     class Meta:
-        # model = User
-        fields = ['nickname', 'profile_image']
-
-
-class GenderSerializer(serializers.ModelSerializer):
-    class Meta:
-        # model = User
-        fields = ['gender']
+        model = CustomUser
+        fields = ['nickname', 'profile_image', 'gender', 'temperature']
