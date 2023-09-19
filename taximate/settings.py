@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'allauth.account',
     # simple-jwt 관련
     'rest_framework_simplejwt',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -192,6 +193,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    # 'DEFAULT_RENDERER_CLASSES': [
+    #     'rest_framework.renderers.JSONRenderer',
+    # ],
 }
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
@@ -219,3 +223,16 @@ TIME_INPUT_FORMATS = ['%H:%M']
 import pymysql
 
 pymysql.install_as_MySQLdb()
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.kakao.KakaoOAuth2',  # 카카오 백엔드 추가
+    # 다른 백엔드들도 필요하면 추가할 수 있습니다.
+)
+
+SOCIAL_AUTH_KAKAO_KEY = 'd679f25e59dbc97619baf1256489b449'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = '/'  # 로그인 후 리디렉션할 URL 설정
+
+AUTH_USER_MODEL = 'member.CustomUser'
