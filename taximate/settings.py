@@ -152,6 +152,8 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://127.0.0.1:8000"]
 
+
+
 CORS_ALLOW_CREDENTIALS = True
 
 REST_AUTH = {
@@ -236,3 +238,5 @@ LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = '/'  # 로그인 후 리디렉션할 URL 설정
 
 AUTH_USER_MODEL = 'member.CustomUser'
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
