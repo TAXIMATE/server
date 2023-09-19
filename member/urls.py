@@ -7,7 +7,7 @@ app_name = 'member'
 urlpatterns = [
     # path('kakao/', KakaoView.as_view()),
     # path('login/', KakaoCallBackView.as_view()),
-    path('login/', views,kakao_login, name = 'kakao_logint'),
+    path('login/', views,kakao_login, name = 'kakao_login'),
     path('logout/', views.kakao_logout, name = 'kakao_logout'),
     path('gender/<str:gender>/', views.check_gender, name = 'check_gender'),
     # path('gender/', views.check_gender),
