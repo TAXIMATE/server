@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'allauth.account',
     # simple-jwt 관련
     'rest_framework_simplejwt',
-    'social_django'
+    'social_django',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
