@@ -133,7 +133,7 @@ from social_django.utils import psa
 #             login(request, new_user)
 #             return Response(False)
 
-@api_view(['POST'])
+@api_view(['GET'])
 def kakao_login(request):
     data = {
         "grant_type" : "authorization_code",
