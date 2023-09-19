@@ -11,3 +11,11 @@ class Team(models.Model):
     start_time = models.TimeField(auto_now=False, auto_now_add=False)
     current_member = models.IntegerField(default=1)
     maximum_member = models.IntegerField()
+    state = models.IntegerField(default=0)
+
+
+class Comment(models.Model):
+    member = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="comments")
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="comments")
+    comment = models.CharField(max_length=100, blank = True)
+    created_at = models.DateTimeField(auto_now_add=True)
