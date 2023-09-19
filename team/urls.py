@@ -5,5 +5,5 @@ from .views import *
 app_name = 'team'
 
 urlpatterns = [
-    path('create/', CreateTeam.as_view()),
+    path('', views.number_of_team),
 ]
