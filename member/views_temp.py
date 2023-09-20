@@ -1,6 +1,19 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+@api_view(['POST'])
+def check_gender(request, gender):
+    if gender == "male":
+        data = {
+            "msg" : "남성 선택",
+            "code" : "m-S004",
+        }
+    elif gender == "female":
+        data = {
+            "msg" : "여성 선택",
+            "code" : "m-S005",
+        }
+    return Response(data)
 
 @api_view(['GET'])
 def member_information(request):
