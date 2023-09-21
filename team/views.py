@@ -56,3 +56,10 @@ class Create_team(CreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         serializer.save(master_member = user)
+
+
+@api_view(['DELETE'])
+def destroy_team(request, team_id):
+    team = Team.objects.get(pk = team_id)
+    team.delete()
+    return Response(status = status.HTTP_204_NO_CONTENT)
