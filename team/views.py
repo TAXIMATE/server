@@ -183,3 +183,23 @@ def search_team(request):
         "data" : data
     }
     return Response(res)
+
+
+@api_view(['PUT'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def team_start(request, team_id):
+    team = Team.objects.get(pk = team_id)
+    user = request.user
+    if team.master_member != user:
+        res = {
+            "msg" : "master_member가 아닌 사용자",
+            "code" : "t-F006"
+        }
+    else:
+        team.state = 1
+        team.save()
+        res = {
+            "msg" : "팀 출발 완료",
+            "code" : "t-S009"
+        }
+    return Response(res)
