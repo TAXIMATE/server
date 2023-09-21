@@ -38,18 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'team',
     'member',
+    'team',
     'rest_framework',
-    'rest_framework.authtoken',
-    #dj-rest-auth 관련
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
-    'allauth',
-    'allauth.account',
-    # simple-jwt 관련
-    'rest_framework_simplejwt',
-    'social_django',
     'corsheaders',
 ]
 
