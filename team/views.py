@@ -63,3 +63,10 @@ def destroy_team(request, team_id):
     team = Team.objects.get(pk = team_id)
     team.delete()
     return Response(status = status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+def all_teams(request):
+    teams = Team.objects.all()
+    serializer = TeamSimpleSerializer(teams, many = True)
+    return Response(serializer.data)
