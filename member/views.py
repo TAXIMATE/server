@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 from .models import *
+from team.models import *
 # from team.models import *
 # from team.serializers import *
 from rest_framework.decorators import api_view, authentication_classes
@@ -144,4 +145,30 @@ def user_information(request):
         "code" : "m-S006",
         "data" : data
     }
+    return Response(res)
+
+
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def rate_information(request, team_id):
+    user = request.user
+    team = Team.objects.get(pk = team_id)
+    master_member = team.master_member
+    usual_member = team.usual_member.all()
+    master_data = UserRateSerializer(master_member).data
+    usual_data = UserRateSerializer(usual_member, many = True).data
+    users = usual_data + [master_data]
+    
+    users = [u for u in users if u['kakao_id'] != user.kakao_id]
+    if users == []:
+        res = {
+            "msg" : "평가 대상자 없음",
+            "code" : "m-S008",
+        }
+    else:
+        res = {
+            "msg" : "평가 대상 유저 정보 불러오기 성공",
+            "code" : "m-S007",
+            "data" : users
+        }
     return Response(res)
