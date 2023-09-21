@@ -195,6 +195,7 @@ REST_AUTH = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
     # 'DEFAULT_RENDERER_CLASSES': [
     #     'rest_framework.renderers.JSONRenderer',
@@ -241,3 +242,9 @@ LOGIN_REDIRECT_URL = '/'  # 로그인 후 리디렉션할 URL 설정
 AUTH_USER_MODEL = 'member.CustomUser'
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
+
+import datetime
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # 토큰 만료 기간 설정
+}

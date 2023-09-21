@@ -7,7 +7,7 @@ from .serializers import *
 from .models import *
 # from team.models import *
 # from team.serializers import *
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes
 from django.db.models import Q
 from django.contrib import auth
 import requests
@@ -17,6 +17,8 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView, LogoutView
 from social_django.utils import psa
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 # Create your views here.
 class KakaoView(View):
@@ -56,11 +58,13 @@ def kakao_login(request):
     profile_image = user_information["kakao_account"]["profile"]["thumbnail_image_url"]
     nickname = user_information["properties"]["nickname"]
 
-    # user = auth.authenticate(request = request, kakao_id = kakao_id)
+    user = auth.authenticate(request = request, kakao_id = kakao_id)
     user = CustomUser.objects.filter(kakao_id = kakao_id).first()
     if user is not None:
         login(request, user=user)
-        return Response(access_token)
+        user_data = CustomUser(user)
+        serializer = UserSimpleSerializer(user_data)
+        return Response(serializer.data)
     else:
         new_user = CustomUser(kakao_id = kakao_id, profile_image = profile_image, nickname = nickname)
         new_user.save()
@@ -109,20 +113,40 @@ def kakao_logout(request):
 
 
 @api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
 def check_gender(request, gender):
-    user = CustomUser(request.user)
-    # gender = request.data['gender']
+    # user = CustomUser.objects.get(request.user)
+    # # gender = request.data['gender']
+    # if gender == "male":
+    #     user.gender = True
+    #     user.save()
+    # elif gender == "female":
+    #     user.gender = False
+    #     user.save()
+    # else:
+    #     return HttpResponse({'Wrong Request'})
+    # return Response(status = status.HTTP_200_OK)
     if gender == "male":
-        user.gender = True
+        request.user.gender = True
+        request.user.save()
+        return Response(status = status.HTTP_200_OK)
     elif gender == "female":
-        user.gender = False
+        request.user.gender = False
+        request.user.save()
+        return Response(status = status.HTTP_200_OK)
     else:
         return HttpResponse({'Wrong Request'})
-    return Response(status = status.HTTP_200_OK)
 
 
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
 def user_information(request):
-    user = CustomUser(request.user)
-    serializer = UserSimpleSerializer(user)
-    return Response(serializer.data, status = status.HTTP_200_OK)
+    # user = CustomUser(request.user)
+    # serializer = UserSimpleSerializer(user)
+    # return Response(serializer.data, status = status.HTTP_200_OK)
+    if request.user.is_authenticated:
+        user = request.user
+        serializer = UserSimpleSerializer(user)
+        return Response(serializer.data)
+    else:
+        return Response(False)
