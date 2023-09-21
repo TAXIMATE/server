@@ -183,13 +183,3 @@ def search_team(request):
         "data" : data
     }
     return Response(res)
-
-
-@api_view(['PUT'])
-def test(request, team_id):
-    team = Team.objects.get(pk = team_id)
-    user = request.user
-    team.usual_member.add(user)
-    team.save()
-    serializer = TeamDetailSerializer(team)
-    return Response(serializer.data)
