@@ -14,6 +14,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 import json
 
 
+# 대기 중인 팀 수
 @api_view(['GET'])
 def waiting_teams(request):
     num = Team.objects.all().count()
@@ -27,6 +28,7 @@ def waiting_teams(request):
     return Response(res)
 
 
+# 팀 생성
 class Create_team(CreateAPIView):
     serializer_class = TeamCreateSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -58,6 +60,7 @@ class Create_team(CreateAPIView):
         serializer.save(master_member = user)
 
 
+# 팀 삭제
 @api_view(['DELETE'])
 def destroy_team(request, team_id):
     team = Team.objects.get(pk = team_id)
@@ -65,6 +68,7 @@ def destroy_team(request, team_id):
     return Response(status = status.HTTP_204_NO_CONTENT)
 
 
+# 모든 팀 목록
 @api_view(['GET'])
 def all_teams(request):
     teams = Team.objects.all()
@@ -72,6 +76,7 @@ def all_teams(request):
     return Response(serializer.data)
 
 
+# 팀 참가
 @api_view(['PUT'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def participate_team(request, team_id):
@@ -123,6 +128,7 @@ def participate_team(request, team_id):
     return Response(res)
 
 
+# 팀 세부사항
 @api_view(['GET'])
 def team_detail(request, team_id):
     team = Team.objects.get(pk = team_id)
@@ -135,6 +141,7 @@ def team_detail(request, team_id):
     return Response(res)
 
 
+# 댓글 작성
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def create_comment(request, team_id):
@@ -185,6 +192,7 @@ def search_team(request):
     return Response(res)
 
 
+# 팀 출발 상태로 변경
 @api_view(['PUT'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def team_start(request, team_id):

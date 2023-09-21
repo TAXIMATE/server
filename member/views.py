@@ -32,6 +32,7 @@ class KakaoView(View):
         return redirect(f"{kakao_api}&client_id={client_id}&redirect_uri={redirect_uri}")
 
 
+# 카카오 로그인
 @api_view(['POST'])
 def kakao_login(request):
     data = {
@@ -94,6 +95,7 @@ def kakao_login(request):
     return Response(res_data)
         
 
+# 카카오 로그아웃
 @api_view(['POST'])
 def kakao_logout(request):
     auth.logout(request)
@@ -104,6 +106,7 @@ def kakao_logout(request):
     return Response(data)
 
 
+# 성별 선택
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def check_gender(request, gender):
@@ -129,6 +132,7 @@ def check_gender(request, gender):
     return Response(data)
 
 
+# 유저 정보 반환
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def user_information(request):
@@ -148,6 +152,7 @@ def user_information(request):
     return Response(res)
 
 
+# 평가할 유저 정보 반환
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def rate_information(request, team_id):
