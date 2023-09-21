@@ -144,3 +144,15 @@ def create_comment(request, team_id):
         "code" : "t-F004"
     }
     return Response(res)
+
+
+@api_view(['GET'])
+def get_comments(request, team_id):
+    team = Team.objects.get(pk = team_id)
+    serializer = TeamCommentsSerializer(team)
+    res = {
+        "msg" : "전체 댓글 불러오기 성공",
+        "code" : "t-S006",
+        "data" : serializer.data
+    }
+    return Response(res)
