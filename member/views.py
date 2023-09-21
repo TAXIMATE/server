@@ -54,22 +54,43 @@ def kakao_login(request):
     user_information = requests.get(kakao_user_api, headers = header).json()
     
     kakao_id = user_information["id"]
-    # kakao_email = user_information["kakao_account"]["email"]
     profile_image = user_information["kakao_account"]["profile"]["thumbnail_image_url"]
     nickname = user_information["properties"]["nickname"]
 
-    user = auth.authenticate(request = request, kakao_id = kakao_id)
-    user = CustomUser.objects.filter(kakao_id = kakao_id).first()
+    user = CustomUser.objects.filter(kakao_id=kakao_id).first()
     if user is not None:
-        login(request, user=user)
-        user_data = CustomUser(user)
-        serializer = UserSimpleSerializer(user_data)
-        return Response(serializer.data)
-    else:
-        new_user = CustomUser(kakao_id = kakao_id, profile_image = profile_image, nickname = nickname)
-        new_user.save()
-        login(request, new_user)
-        return Response(False)
+        if user.gender != None:
+            auth.login(request, user=user)
+            # serializer = UserSimpleSerializer(user)
+            res_data = {
+                "msg" : "기존 사용자 로그인 성공",
+                "code" : "m-S002",
+                "data" : {
+                "gender_needed" : True
+                }
+            }
+            return Response(res_data)
+        else:
+            auth.login(request, user = user)
+            res_data = {
+                "msg" : "신규 가입자 로그인 성공",
+                "code" : "m-S001",
+                "data" : {
+                "gender_needed" : False
+                }
+            }
+            return Response(res_data)
+    new_user = CustomUser(kakao_id = kakao_id, profile_image = profile_image, nickname = nickname)
+    new_user.save()
+    auth.login(request, new_user)
+    res_data = {
+        "msg" : "신규 가입자, 로그인 성공",
+        "code" : "m-S001",
+        "data" : {
+        "gender_needed" : False
+        }
+    }
+    return Response(res_data)
         
 
 # def kakao_logout(request):
