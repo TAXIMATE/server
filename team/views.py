@@ -70,3 +70,45 @@ def all_teams(request):
     teams = Team.objects.all()
     serializer = TeamSimpleSerializer(teams, many = True)
     return Response(serializer.data)
+
+
+@api_view(['PUT'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def participate_team(request, team_id):
+    team = Team.objects.get(pk = team_id)
+    if team.master_member == request.user:
+        res = {
+            "msg" : "방장은 팀 참가 불가",
+            "code" : "t-F004"
+        }
+        return Response(res)
+
+    # 팀 인원 초과시
+    if team.current_member == team.maximum_member:
+        res = {
+            "msg" : "팀 인원 초과",
+            "code" : "t-F003",
+        }
+        return Response(res)
+    
+    # 팀 탈퇴시
+    if team.usual_member.filter(kakao_id = request.user.kakao_id).exists():
+        team.usual_member.remove(request.user)
+        team.current_member -= 1
+        res = {
+            "msg" : "팀 탈퇴 성공",
+            "code" : "t-S004"
+        }
+    # 팀 참가시
+    else:
+        team.usual_member.add(request.user)
+        team.current_member += 1
+        res = {
+            "msg" : "팀 참가 성공",
+            "code" : "t-S003",
+            "data" : {
+                "team_id" : int
+            }
+        }
+    team.save()
+    return Response(res)
