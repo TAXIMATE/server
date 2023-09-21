@@ -131,12 +131,17 @@ def check_gender(request, gender):
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def user_information(request):
-    # user = CustomUser(request.user)
-    # serializer = UserSimpleSerializer(user)
-    # return Response(serializer.data, status = status.HTTP_200_OK)
-    if request.user.is_authenticated:
-        user = request.user
-        serializer = UserSimpleSerializer(user)
-        return Response(serializer.data)
-    else:
-        return Response(False)
+    serializer = UserSimpleSerializer(request.user)
+    data = serializer.data
+    if data["nickname"] == None:
+        res = {
+            "msg" : "유저 정보 불러오기 실패",
+            "code" : "m-F002"
+        }
+        return Response(res)
+    res = {
+        "msg" : "유저 정보 불러오기 성공",
+        "code" : "m-S006",
+        "data" : data
+    }
+    return Response(res)
