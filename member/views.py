@@ -106,27 +106,26 @@ def kakao_logout(request):
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def check_gender(request, gender):
-    # user = CustomUser.objects.get(request.user)
-    # # gender = request.data['gender']
-    # if gender == "male":
-    #     user.gender = True
-    #     user.save()
-    # elif gender == "female":
-    #     user.gender = False
-    #     user.save()
-    # else:
-    #     return HttpResponse({'Wrong Request'})
-    # return Response(status = status.HTTP_200_OK)
     if gender == "male":
         request.user.gender = True
         request.user.save()
-        return Response(status = status.HTTP_200_OK)
+        data = {
+            "msg" : "남성 선택",
+            "code" : "m-S004",
+        }
     elif gender == "female":
         request.user.gender = False
         request.user.save()
-        return Response(status = status.HTTP_200_OK)
+        data = {
+            "msg" : "여성 선택",
+            "code" : "m-S005",
+        }
     else:
-        return HttpResponse({'Wrong Request'})
+        data = {
+            "msg" : "성별 선택 오류",
+            "code" : "m-F001"
+        }
+    return Response(data)
 
 
 @api_view(['GET'])
