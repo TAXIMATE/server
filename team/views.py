@@ -124,3 +124,23 @@ def team_detail(request, team_id):
         "data" : data
     }
     return Response(res)
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def create_comment(request, team_id):
+    team = Team.objects.get(pk = team_id)
+    user = request.user
+    serializer = CommentCreateSerializer(data = request.data)
+    if serializer.is_valid():
+        serializer.save(team = team, member = user)
+        res = {
+            "msg" : "댓글 작성 성공",
+            "code" : "t-S007"
+        }
+        return Response(res)
+    res = {
+        "msg" : "댓글 작성 실패",
+        "code" : "t-F004"
+    }
+    return Response(res)
