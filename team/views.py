@@ -112,3 +112,15 @@ def participate_team(request, team_id):
         }
     team.save()
     return Response(res)
+
+
+@api_view(['GET'])
+def team_detail(request, team_id):
+    team = Team.objects.get(pk = team_id)
+    data = TeamDetailSerializer(team).data
+    res = {
+        "msg" : "게시글 자세한 정보 불러오기 성공",
+        "code" : "t-S005",
+        "data" : data
+    }
+    return Response(res)
