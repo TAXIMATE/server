@@ -64,8 +64,18 @@ class Create_team(CreateAPIView):
 @api_view(['DELETE'])
 def destroy_team(request, team_id):
     team = Team.objects.get(pk = team_id)
-    team.delete()
-    return Response(status = status.HTTP_204_NO_CONTENT)
+    if team.master_member != request.user:
+        res = {
+            "msg" : "master_member가 아닌 사용자",
+            "code" : "t-F007"
+        }
+    else:
+        team.delete()
+        res = {
+            "msg" : "팀 삭제 성공",
+            "code" : "t-S010",
+        }
+    return Response(res)
 
 
 # 모든 팀 목록
