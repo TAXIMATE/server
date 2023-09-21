@@ -143,10 +143,17 @@ def participate_team(request, team_id):
 def team_detail(request, team_id):
     team = Team.objects.get(pk = team_id)
     data = TeamDetailSerializer(team).data
+    user = request.user
+    if team.master_member == user or team.usual_member == user:
+        exist_member = True
+    else:
+        exist_member = False
     res = {
         "msg" : "게시글 자세한 정보 불러오기 성공",
         "code" : "t-S005",
-        "data" : data
+        "data" : data,
+        "state" : team.state,
+        "exist_member" : exist_member
     }
     return Response(res)
 
