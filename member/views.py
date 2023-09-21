@@ -93,44 +93,14 @@ def kakao_login(request):
     return Response(res_data)
         
 
-# def kakao_logout(request):
-#     user = CustomUser(request.user)
-#     kakao_admin_key = "17aff4f8209625d0480d6157aba94404"
-#     logout_url = "https://kapi.kakao.com/v1/user/logout"
-#     target_id_type = "user_id"
-#     target_id = user.kakao_id
-#     headers = {"Authorization" : f"KakaoAK${kakao_admin_key}"}
-#     data = {
-#         "target_id_type" : target_id_type,
-#         "target_id" : target_id
-#     }
-#     logout_res = requests.post(logout_url, headers=headers, data=data).json()
-#     response = logout_res.get("id")
-#     if target_id != response:
-#         return Exception("Logout Failed")
-#     else:
-#         print("Logout Complete")
-#     logout(request)
-#     return Response(status = status.HTTP_200_OK)
-
 @api_view(['POST'])
 def kakao_logout(request):
-    user = CustomUser(request.user)
-    kakao_admin_key = "17aff4f8209625d0480d6157aba94404"
-    logout_url = "https://kapi.kakao.com/v1/user/logout"
-    target_id = user.kakao_id
-    headers = {"Authorization" : f"KakaoAK ${kakao_admin_key}"}
+    auth.logout(request)
     data = {
-        "target_id_type" : "user_id",
-        "target_id" : target_id
+        "msg" : "로그아웃 성공",
+        "code" : "m-S003",
     }
-    logout_res = requests.post(logout_url, headers=headers, data=data).json()
-    response_id = logout_res.get("id")
-    if response_id == target_id:
-        auth.logout(request)
-        return Response(status = status.HTTP_200_OK)
-    else:
-        return HttpResponse(status = status.HTTP_400_BAD_REQUEST)
+    return Response(data)
 
 
 @api_view(['POST'])
