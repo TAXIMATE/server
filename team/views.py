@@ -76,6 +76,15 @@ def all_teams(request):
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def participate_team(request, team_id):
     team = Team.objects.get(pk = team_id)
+    user = request.user
+
+    if Team.objects.filter(usual_member = user).exists():
+        res = {
+            "msg" : "이미 팀에 소속된 사용자",
+            "msg" : "t-F005"
+        }
+        return Response(res)
+
     if team.master_member == request.user:
         res = {
             "msg" : "방장은 팀 참가 불가",
