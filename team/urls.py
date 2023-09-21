@@ -15,4 +15,5 @@ urlpatterns = [
     path('detail/comments/<int:team_id>/', views.get_comments),
     path('detail/comments/create/<int:team_id>/', views.create_comment),
     path('search/', views.search_team),
+    path('test/<int:team_id>/', views.test),
 ]

@@ -81,7 +81,7 @@ def participate_team(request, team_id):
     if Team.objects.filter(usual_member = user).exists():
         res = {
             "msg" : "이미 팀에 소속된 사용자",
-            "msg" : "t-F005"
+            "code" : "t-F005"
         }
         return Response(res)
 
@@ -183,3 +183,13 @@ def search_team(request):
         "data" : data
     }
     return Response(res)
+
+
+@api_view(['PUT'])
+def test(request, team_id):
+    team = Team.objects.get(pk = team_id)
+    user = request.user
+    team.usual_member.add(user)
+    team.save()
+    serializer = TeamDetailSerializer(team)
+    return Response(serializer.data)
