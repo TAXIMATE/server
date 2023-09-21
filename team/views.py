@@ -156,3 +156,21 @@ def get_comments(request, team_id):
         "data" : serializer.data
     }
     return Response(res)
+
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def search_team(request):
+    res = request.data
+    start_station = res["start_station"]
+    arrival_station = res["arrival_station"]
+
+    teams = Team.objects.filter(Q(start_station__contains = start_station)&Q(arrival_station__contains = arrival_station))
+    serializer = TeamSimpleSerializer(teams, many = True)
+    data = serializer.data
+    res = {
+        "msg" : "역 이름으로 팀 검색 성공",
+	    "code" : "t-S008",
+        "data" : data
+    }
+    return Response(res)
