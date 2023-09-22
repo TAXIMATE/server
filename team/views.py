@@ -216,11 +216,17 @@ def search_team(request):
     teams = Team.objects.filter((Q(start_station__contains = start_station)&Q(arrival_station__contains = arrival_station))&Q(start_time__gt = now))
     serializer = TeamSimpleSerializer(teams, many = True)
     data = serializer.data
-    res = {
-        "msg" : "역 이름으로 팀 검색 성공",
-	    "code" : "t-S008",
-        "data" : data
-    }
+    if data == []:
+        res = {
+            "msg" : "조건에 맞는 팀 없음",
+            "code" : "t-S010"
+        }
+    else:
+        res = {
+            "msg" : "역 이름으로 팀 검색 성공",
+            "code" : "t-S008",
+            "data" : data
+        }
     return Response(res)
 
 
