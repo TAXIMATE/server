@@ -55,6 +55,10 @@ def kakao_login(request):
 
     user = CustomUser.objects.filter(kakao_id=kakao_id).first()
     if user is not None:
+        # 프로필 사진이 바뀌었을 경우 적용
+        if user.profile_image != profile_image:
+                user.profile_image = profile_image
+                user.save()
         if user.gender != None:
             auth.login(request, user=user)
             # serializer = UserSimpleSerializer(user)
