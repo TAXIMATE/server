@@ -249,3 +249,38 @@ def team_start(request, team_id):
             "code" : "t-S009"
         }
     return Response(res)
+
+
+# 유저가 속한 팀 반환
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def user_in_team(request):
+    user = request.user
+    if Team.objects.filter(master_member = user).exists():
+        team = Team.objects.get(master_member = user)
+        serializer = TeamSimpleSerializer(team)
+        res = {
+            "msg" : "사용자의 팀 반환 성공",
+            "code" : "t-S012",
+            "data" : {
+                "team_data" : serializer.data,
+                "master" : True
+            }
+        }
+    elif Team.objects.filter(usual_member = user).exists():
+        team = Team.objects.get(usual_member = user)
+        serializer = TeamSimpleSerializer(team)
+        res = {
+            "msg" : "사용자가 속한 팀 반환 성공",
+            "code" : "t-S013",
+            "data" : {
+                "team_data" : serializer.data,
+                "master" : False
+            }
+        }
+    else:
+        res = {
+            "msg" : "사용자가 속한 팀 없음",
+            "code" : "t-S014"
+        }
+    return Response(res)

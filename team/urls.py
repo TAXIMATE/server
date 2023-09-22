@@ -16,4 +16,5 @@ urlpatterns = [
     path('detail/comments/create/<int:team_id>/', views.create_comment),
     path('search/', views.search_team),
     path('start/<int:team_id>/', views.team_start),
+    path('own/', views.user_in_team),
 ]
