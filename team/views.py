@@ -179,6 +179,7 @@ def create_comment(request, team_id):
     return Response(res)
 
 
+# 댓글 목록 가져오기
 @api_view(['GET'])
 def get_comments(request, team_id):
     team = Team.objects.get(pk = team_id)
@@ -190,7 +191,7 @@ def get_comments(request, team_id):
     }
     return Response(res)
 
-
+# 역 이름으로 팀 검색
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def search_team(request):
