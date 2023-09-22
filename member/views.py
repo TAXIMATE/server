@@ -22,9 +22,9 @@ def kakao_login(request, code):
     data = {
         "grant_type" : "authorization_code",
         "client_id" : "d679f25e59dbc97619baf1256489b449",
-        "redirect_uri" : "http://localhost.3000/wait",
+        # "redirect_uri" : "http://localhost.3000/wait",
         # "redirect_uri" : "http://127.0.0.1:8000/member/login/",
-        # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
+        "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
         # "code" : request.GET["code"]
         "code" : code
     }
@@ -174,9 +174,9 @@ def rate_information(request, team_id):
 class KakaoView(View):
     def get(self, request):
         kakao_api = "https://kauth.kakao.com/oauth/authorize?response_type=code"
-        # redirect_uri = "http://127.0.0.1:8000/member/login/"
+        redirect_uri = "http://127.0.0.1:8000/member/login/"
         # redirect_uri = "http://localhost.3000/wait"
-        redirect_uri = "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/"
+        # redirect_uri = "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/"
         client_id = "d679f25e59dbc97619baf1256489b449"
 
         return redirect(f"{kakao_api}&client_id={client_id}&redirect_uri={redirect_uri}")
@@ -189,8 +189,8 @@ def kakao_login_dev(request):
         "grant_type" : "authorization_code",
         "client_id" : "d679f25e59dbc97619baf1256489b449",
         # "redirect_uri" : "http://localhost.3000/wait",
-        # "redirect_uri" : "http://127.0.0.1:8000/member/login/",
-        "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
+        "redirect_uri" : "http://127.0.0.1:8000/member/login/",
+        # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
         "code" : request.GET["code"]
         # "code" : code
     }
