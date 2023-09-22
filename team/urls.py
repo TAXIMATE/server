@@ -5,7 +5,6 @@ from .views import *
 app_name = 'team'
 
 urlpatterns = [
-    path('all/', views.all_teams),
     path('', views.waiting_teams),
     # path('create/', views.create_team),
     path('create/', Create_team.as_view()),
@@ -17,4 +16,7 @@ urlpatterns = [
     path('search/', views.search_team),
     path('start/<int:team_id>/', views.team_start),
     path('own/', views.user_in_team),
+
+    ## 개발자용 api
+    path('all/', views.all_teams),
 ]
