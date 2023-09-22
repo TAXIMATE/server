@@ -41,6 +41,17 @@ class Create_team(CreateAPIView):
                 "code" : "t-F005"
             }
             return Response(res)
+        
+        now = datetime.now()
+        time_str = request.data.get("start_time")
+        start_time = datetime.strptime(time_str, "%Y-%m-%dT%H:%M")
+        if now >= start_time:
+            res = {
+                "msg" : "잘못된 시간 입력",
+                "code" : "t-F009"
+            }
+            return Response(res)
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -62,6 +73,7 @@ class Create_team(CreateAPIView):
 
 # 팀 삭제
 @api_view(['DELETE'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
 def destroy_team(request, team_id):
     team = Team.objects.get(pk = team_id)
     if team.master_member != request.user:
