@@ -210,8 +210,10 @@ def search_team(request):
     res = request.data
     start_station = res["start_station"]
     arrival_station = res["arrival_station"]
-
-    teams = Team.objects.filter(Q(start_station__contains = start_station)&Q(arrival_station__contains = arrival_station))
+    now = datetime.now()
+    # 검색 조건
+    # 출발역, 도착역, 출발시각
+    teams = Team.objects.filter((Q(start_station__contains = start_station)&Q(arrival_station__contains = arrival_station))&Q(start_time__gt = now))
     serializer = TeamSimpleSerializer(teams, many = True)
     data = serializer.data
     res = {
