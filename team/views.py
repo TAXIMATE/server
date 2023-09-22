@@ -9,14 +9,17 @@ from django.db.models import Q
 from rest_framework.decorators import api_view, authentication_classes,permission_classes
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 import json
+from datetime import datetime
 
 
 # 대기 중인 팀 수
 @api_view(['GET'])
 def waiting_teams(request):
-    num = Team.objects.all().count()
+    now = datetime.now()
+    # num = Team.objects.all().count()
+    num = Team.objects.filter(start_time__gt = now).count()
     res = {
-        "msg" : "전체 팀 수 조회에 성공",
+        "msg" : "대기 중인 팀 수 조회에 성공",
         "code" : "t-S001",
         "data" : {
             "teams" : num
