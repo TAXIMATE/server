@@ -253,5 +253,5 @@ def kakao_login_dev(request):
 @api_view(['GET'])
 def all_member(request):
     members = CustomUser.objects.all()
-    serializer = UserSerializer(members)
+    serializer = UserSerializer(members, many = True)
     return Response(serializer.data)
