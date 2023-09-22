@@ -13,12 +13,6 @@ from django.db.models import Q
 from django.contrib import auth
 import requests
 import json
-from rest_framework.renderers import JSONRenderer
-from django.http import HttpResponse, JsonResponse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.views import LoginView, LogoutView
-from social_django.utils import psa
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 # Create your views here.
