@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'team',
     'rest_framework',
     'corsheaders',
+    'django_cron',
 ]
 
 MIDDLEWARE = [
@@ -158,3 +159,6 @@ AUTH_USER_MODEL = 'member.CustomUser'
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", 'https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app']
 
+CRON_CLASSES = [
+    'team.views.Delete_old_team',
+]

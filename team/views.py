@@ -160,12 +160,16 @@ def team_detail(request, team_id):
         exist_member = True
     else:
         exist_member = False
+    data_dict = dict(data)
+    data_dict.update({"state" : team.state})
+    data_dict.update({"exist_member" : exist_member})
     res = {
         "msg" : "게시글 자세한 정보 불러오기 성공",
         "code" : "t-S005",
-        "data" : data,
-        "state" : team.state,
-        "exist_member" : exist_member
+        "data" : data_dict
+        
+        # "state" : team.state,
+        # "exist_member" : exist_member
     }
     return Response(res)
 
@@ -284,3 +288,18 @@ def user_in_team(request):
             "code" : "t-S014"
         }
     return Response(res)
+
+
+from django_cron import CronJobBase, Schedule
+
+class Delete_old_team(CronJobBase):
+    RUN_EVERY_MINS = 1  # 1분마다 실행
+    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+    code = 'team.views.Delete_old_team'
+
+    def do(self):
+        now = datetime.now()
+        teams = Team.objects.filter(start_time__lt = now)
+        teams.delete()
+        print("오래된 팀 삭제 완료")
+    
