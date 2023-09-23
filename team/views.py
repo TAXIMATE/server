@@ -43,14 +43,15 @@ class Create_team(CreateAPIView):
     def create(self, request):
         user = self.request.user
         teams = available_teams()
-        now = datetime.now()
-        if Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)).exists():
+        # if Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)).exists():
+        if teams.filter(Q(usual_member = user)|Q(master_member = user)).exists():
             res = {
                 "msg" : "이미 팀에 소속된 사용자",
                 "code" : "t-F005"
             }
             return Response(res)
         time_str = request.data.get("start_time")
+        now = datetime.now()
         start_time = datetime.strptime(time_str, "%Y-%m-%dT%H:%M")
         if now >= start_time:
             res = {
@@ -118,25 +119,19 @@ def participate_team(request, team_id):
     if team.master_member == user or team.usual_member == user:
         ## 방장일 경우
         if team.master_member == user:
-            team.delete()
+            # team.delete()
             res = {
-                "msg" : "방장이 팀 퇴장",
-                "code" : "t-S003",
-                "data" : {
-                    "is_master" : True
-                }
+                "msg" : "방장은 팀 퇴장 불가",
+                "code" : "t-S003"
             }
         else:
             team.usual_member.remove(user)
             team.current_member -= 1
             res = {
-                "msg" : "일반 사용자 팀 퇴장",
-                "code" : "t-S004",
-                "data" : {
-                    "is_master" : False
-                }
+                "msg" : "사용자 팀 퇴장",
+                "code" : "t-S004"
             }
-        team.save()
+            team.save()
         return Response(res)
     
     ## 방에 참여하지 않은 인원일 경우 (방에 참여하려는 경우)
