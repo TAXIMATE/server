@@ -11,18 +11,22 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 import json
 from datetime import datetime
 
+# 출발 시각이 도래하지 않은 팀 객체 리턴
+def available_teams():
+    now = datetime.now()
+    teams = Team.objects.filter(start_time__gt = now)
+    return teams
+
 
 # 대기 중인 팀 수
 @api_view(['GET'])
 def waiting_teams(request):
-    now = datetime.now()
-    # num = Team.objects.all().count()
-    num = Team.objects.filter(start_time__gt = now).count()
+    teams = available_teams().count()
     res = {
         "msg" : "대기 중인 팀 수 조회에 성공",
         "code" : "t-S001",
         "data" : {
-            "teams" : num
+            "teams" : teams
         },
     }
     return Response(res)
@@ -35,14 +39,13 @@ class Create_team(CreateAPIView):
 
     def create(self, request):
         user = self.request.user
-        if Team.objects.filter(Q(master_member = user)|Q(usual_member = user)).exists():
+        now = datetime.now()
+        if Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)).exists():
             res = {
                 "msg" : "이미 팀에 소속된 사용자",
                 "code" : "t-F005"
             }
             return Response(res)
-        
-        now = datetime.now()
         time_str = request.data.get("start_time")
         start_time = datetime.strptime(time_str, "%Y-%m-%dT%H:%M")
         if now >= start_time:
@@ -55,8 +58,9 @@ class Create_team(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        team = Team.objects.get(master_member = user)
-        team_id = TeamIDSerializer(team).data["id"]
+        # team = Team.objects.get(master_member = user)
+        # team_id = TeamIDSerializer(team).data["id"]
+        team_id = serializer.data["id"]
         res = {
             "msg" : "팀 생성 성공",
             "code" : "t-S002",
@@ -94,7 +98,7 @@ def destroy_team(request, team_id):
 @api_view(['GET'])
 def all_teams(request):
     teams = Team.objects.all()
-    serializer = TeamSimpleSerializer(teams, many = True)
+    serializer = TeamSerializer(teams, many = True)
     return Response(serializer.data)
 
 
@@ -104,8 +108,9 @@ def all_teams(request):
 def participate_team(request, team_id):
     team = Team.objects.get(pk = team_id)
     user = request.user
+    now = datetime.now()
 
-    if Team.objects.filter(usual_member = user).exists():
+    if Team.objects.filter((Q(usual_member = user)|Q(master_member = user))&Q(start_time__gt = now)).exists():
         res = {
             "msg" : "이미 팀에 소속된 사용자",
             "code" : "t-F005"
