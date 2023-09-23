@@ -11,13 +11,20 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 import json
 from datetime import datetime
 
+# 현재 참가 가능한 팀 객체 리턴
+def available_teams():
+    now = datetime.now()
+    teams = Team.objects.filter(start_time__gt = now)
+    return teams
+
+
 
 # 대기 중인 팀 수
 @api_view(['GET'])
 def waiting_teams(request):
-    now = datetime.now()
-    # num = Team.objects.all().count()
-    num = Team.objects.filter(start_time__gt = now).count()
+    # now = datetime.now()
+    # num = Team.objects.filter(start_time__gt = now).count()
+    num = available_teams().count()
     res = {
         "msg" : "대기 중인 팀 수 조회에 성공",
         "code" : "t-S001",
@@ -35,6 +42,7 @@ class Create_team(CreateAPIView):
 
     def create(self, request):
         user = self.request.user
+        teams = available_teams()
         now = datetime.now()
         if Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)).exists():
             res = {
