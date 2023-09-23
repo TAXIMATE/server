@@ -40,7 +40,9 @@ class Create_team(CreateAPIView):
     def create(self, request):
         user = self.request.user
         now = datetime.now()
-        if Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)).exists():
+        teams = available_teams()
+        # if Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)).exists():
+        if teams.filter(Q(usual_member = user)|Q(master_member = user)).exists():
             res = {
                 "msg" : "이미 팀에 소속된 사용자",
                 "code" : "t-F005"
