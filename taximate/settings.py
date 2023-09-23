@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'team',
     'rest_framework',
     'corsheaders',
-    'backgrounds_task',
 ]
 
 MIDDLEWARE = [
