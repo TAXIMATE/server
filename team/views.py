@@ -161,7 +161,8 @@ def team_detail(request, team_id):
     else:
         exist_member = False
     data = dict(data)
-    data.update({"state" : team.state}).update({"exist_member" : exist_member})
+    data.update({"state" : team.state})
+    data.update({"exist_member" : exist_member})
     res = {
         "msg" : "게시글 자세한 정보 불러오기 성공",
         "code" : "t-S005",
