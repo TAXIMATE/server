@@ -119,19 +119,25 @@ def participate_team(request, team_id):
     if team.master_member == user or team.usual_member == user:
         ## 방장일 경우
         if team.master_member == user:
-            # team.delete()
+            team.delete()
             res = {
-                "msg" : "방장은 팀 퇴장 불가",
-                "code" : "t-S003"
+                "msg" : "방장이 팀 탈퇴, 팀 해산",
+                "code" : "t-S003",
+                "data" : {
+                    "is_master" : True
+                }
             }
         else:
             team.usual_member.remove(user)
             team.current_member -= 1
             res = {
                 "msg" : "사용자 팀 퇴장",
-                "code" : "t-S004"
+                "code" : "t-S004",
+                "data" : {
+                    "is_master" : False
+                }
             }
-            team.save()
+        team.save()
         return Response(res)
     
     ## 방에 참여하지 않은 인원일 경우 (방에 참여하려는 경우)
@@ -149,6 +155,7 @@ def participate_team(request, team_id):
             "code" : "t-F004"
         }
         return Response(res)
+    ## 팀에 성공적으로 참가할 경우
     team.usual_member.add(user)
     team.current_member += 1
     team.save()
