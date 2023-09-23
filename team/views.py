@@ -35,14 +35,13 @@ class Create_team(CreateAPIView):
 
     def create(self, request):
         user = self.request.user
-        if Team.objects.filter(Q(master_member = user)|Q(usual_member = user)).exists():
+        now = datetime.now()
+        if Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)).exists():
             res = {
                 "msg" : "이미 팀에 소속된 사용자",
                 "code" : "t-F005"
             }
             return Response(res)
-        
-        now = datetime.now()
         time_str = request.data.get("start_time")
         start_time = datetime.strptime(time_str, "%Y-%m-%dT%H:%M")
         if now >= start_time:
@@ -55,8 +54,9 @@ class Create_team(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        team = Team.objects.get(master_member = user)
-        team_id = TeamIDSerializer(team).data["id"]
+        # team = Team.objects.get(master_member = user)
+        # team_id = TeamIDSerializer(team).data["id"]
+        team_id = serializer.data["id"]
         res = {
             "msg" : "팀 생성 성공",
             "code" : "t-S002",
@@ -104,50 +104,106 @@ def all_teams(request):
 def participate_team(request, team_id):
     team = Team.objects.get(pk = team_id)
     user = request.user
-
-    if Team.objects.filter(usual_member = user).exists():
+    now = datetime.now()
+    
+    ## 방에 참여한 인원일 경우 (방에서 퇴장하는 경우)
+    if team.master_member == user or team.usual_member == user:
+        ## 방장일 경우
+        if team.master_member == user:
+            team.delete()
+            res = {
+                "msg" : "방장이 팀 퇴장",
+                "code" : "t-S003",
+                "data" : {
+                    "is_master" : True
+                }
+            }
+        else:
+            team.usual_member.remove(user)
+            team.current_member -= 1
+            res = {
+                "msg" : "일반 사용자 팀 퇴장",
+                "code" : "t-S004",
+                "data" : {
+                    "is_master" : False
+                }
+            }
+        team.save()
+        return Response(res)
+    
+    ## 방에 참여하지 않은 인원일 경우 (방에 참여하려는 경우)
+    ## 이미 다른 방에 참여한 인원일 경우
+    if Team.objects.filter((Q(usual_member = user)|Q(master_member = user))&Q(start_time__gt = now)).exists():
         res = {
             "msg" : "이미 팀에 소속된 사용자",
-            "code" : "t-F005"
+            "code" : "t-F003"
         }
         return Response(res)
-
-    if team.master_member == request.user:
+    ## 방 인원이 모두 찼을 경우
+    if team.current_member >= team.maximum_member:
         res = {
-            "msg" : "방장은 팀 참가 불가",
+            "msg" : "팀 인원 초과",
             "code" : "t-F004"
         }
         return Response(res)
-
-    # 팀 인원 초과시
-    if team.current_member == team.maximum_member:
-        res = {
-            "msg" : "팀 인원 초과",
-            "code" : "t-F003",
-        }
-        return Response(res)
-    
-    # 팀 탈퇴시
-    if team.usual_member.filter(kakao_id = request.user.kakao_id).exists():
-        team.usual_member.remove(request.user)
-        team.current_member -= 1
-        res = {
-            "msg" : "팀 탈퇴 성공",
-            "code" : "t-S004"
-        }
-    # 팀 참가시
-    else:
-        team.usual_member.add(request.user)
-        team.current_member += 1
-        res = {
-            "msg" : "팀 참가 성공",
-            "code" : "t-S003",
-            "data" : {
-                "team_id" : int
-            }
-        }
+    team.usual_member.add(user)
+    team.current_member += 1
     team.save()
+    res = {
+        "msg" : "팀에 성공적으로 참가",
+        "code" : "t-S015",
+        "data" : {
+            "team_id" : team.pk
+        }
+    }
     return Response(res)
+    
+
+
+    ##########
+    # if Team.objects.filter((Q(usual_member = user)|Q(master_member = user))&Q(start_time__gt = now)).exists():
+    #     res = {
+    #         "msg" : "이미 팀에 소속된 사용자",
+    #         "code" : "t-F005"
+    #     }
+    #     return Response(res)
+
+    # if team.master_member == request.user:
+    #     res = {
+    #         "msg" : "방장은 팀 참가 불가",
+    #         "code" : "t-F004"
+    #     }
+    #     return Response(res)
+
+    # # 팀 인원 초과시
+    # if team.current_member == team.maximum_member:
+    #     res = {
+    #         "msg" : "팀 인원 초과",
+    #         "code" : "t-F003",
+    #     }
+    #     return Response(res)
+    
+    # # 팀 탈퇴시
+    # if team.usual_member.filter(kakao_id = request.user.kakao_id).exists():
+    #     team.usual_member.remove(request.user)
+    #     team.current_member -= 1
+    #     res = {
+    #         "msg" : "팀 탈퇴 성공",
+    #         "code" : "t-004"
+    #     }
+    # # 팀 참가시
+    # else:
+    #     team.usual_member.add(request.user)
+    #     team.current_member += 1
+    #     res = {
+    #         "msg" : "팀 참가 성공",
+    #         "code" : "t-003",
+    #         "data" : {
+    #             "team_id" : int
+    #         }
+    #     }
+    # team.save()
+    # return Response(res)
 
 
 # 팀 세부사항
