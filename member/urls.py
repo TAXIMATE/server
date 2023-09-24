@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from . import views, views_dev
 from .views import *
+from .views_dev import *
 
 app_name = 'member'
 
@@ -12,8 +13,8 @@ urlpatterns = [
     # path('test/', views.test),
     path('rate/information/<int:team_id>/', views.rate_information),
     
-    ## 개발자용 url
+    ## 개발자용 api
     path('kakao/', KakaoView.as_view()),
-    path('login/', views.kakao_login_dev),
-    path('all/', views.all_member),
+    path('login/', views_dev.kakao_login_dev),
+    path('all/', views_dev.all_member),
 ]

@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from . import views, views_dev
 from .views import *
+from .views_dev import *
 
 app_name = 'team'
 
@@ -18,5 +19,5 @@ urlpatterns = [
     path('own/', views.user_in_team),
 
     ## 개발자용 api
-    path('all/', views.all_teams),
+    path('all/', views_dev.all_teams),
 ]

@@ -99,12 +99,7 @@ def destroy_team(request, team_id):
     return Response(res)
 
 
-# 모든 팀 목록
-@api_view(['GET'])
-def all_teams(request):
-    teams = Team.objects.all()
-    serializer = TeamSimpleSerializer(teams, many = True)
-    return Response(serializer.data)
+
 
 
 # 팀 참가
