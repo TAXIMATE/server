@@ -158,3 +158,13 @@ AUTH_USER_MODEL = 'member.CustomUser'
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", 'https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app']
 
+
+
+"""
+DRF 브라우저 설정
+"""
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
