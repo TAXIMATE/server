@@ -1,6 +1,4 @@
-from django.views import View
 from django.shortcuts import redirect, render
-from rest_framework.generics import CreateAPIView,DestroyAPIView, ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *

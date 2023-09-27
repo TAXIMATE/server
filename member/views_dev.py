@@ -1,6 +1,5 @@
 from django.views import View
-from django.shortcuts import redirect, render
-from rest_framework.generics import CreateAPIView,DestroyAPIView, ListAPIView, UpdateAPIView
+from django.shortcuts import redirect
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
@@ -44,10 +43,8 @@ def kakao_login_dev(request):
     }
 
     kakao_token_api = "https://kauth.kakao.com/oauth/token"
-    # access_token = requests.post(kakao_token_api, data = data).json()["access_token"]
-    response = requests.post(kakao_token_api, data=data)
-    res_data = response.json()
-    access_token = res_data.get("access_token")
+    response = requests.post(kakao_token_api, data=data).json()
+    access_token = response.get("access_token")
 
     kakao_user_api = "https://kapi.kakao.com/v2/user/me"
     header = {"Authorization":f"Bearer ${access_token}"}
@@ -62,14 +59,12 @@ def kakao_login_dev(request):
         # 프로필 사진이 바뀌었을 경우 적용
         if user.profile_image != profile_image:
             user.profile_image = profile_image
-            user.save()
         # 닉네임이 바뀌었을 경우 적용
         if user.nickname != nickname:
             user.nickname = nickname
-            user.save()
+        user.save()
         if user.gender != None:
             auth.login(request, user=user)
-            # serializer = UserSimpleSerializer(user)
             res_data = {
                 "msg" : "기존 사용자 로그인 성공",
                 "code" : "m-S002",
