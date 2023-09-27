@@ -15,7 +15,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 
 # Create your views here.
 # 카카오 로그인
-@api_view(['POST'])
+@api_view(['GET'])
 def kakao_login(request):
     data = {
         "grant_type" : "authorization_code",
