@@ -163,8 +163,8 @@ CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", 'https://port-0-server-2rrqq2bl
 """
 DRF 브라우저 설정
 """
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     )
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
