@@ -10,3 +10,6 @@ class CustomUser(AbstractUser):
     temperature = models.FloatField(default=36.5)
 
     USERNAME_FIELD = 'kakao_id'
+
+    def __str__(self):
+        return self.nickname
