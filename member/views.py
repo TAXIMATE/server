@@ -58,7 +58,7 @@ def kakao_login(request, code):
                 "msg" : "기존 사용자 로그인 성공",
                 "code" : "m-S002",
                 "data" : {
-                "gender_needed" : True
+                    "gender_needed" : True
                 }
             }
             return Response(res_data)
@@ -68,7 +68,7 @@ def kakao_login(request, code):
                 "msg" : "신규 가입자 로그인 성공",
                 "code" : "m-S001",
                 "data" : {
-                "gender_needed" : False
+                    "gender_needed" : False
                 }
             }
             return Response(res_data)
@@ -79,7 +79,7 @@ def kakao_login(request, code):
         "msg" : "신규 가입자, 로그인 성공",
         "code" : "m-S001",
         "data" : {
-        "gender_needed" : False
+            "gender_needed" : False
         }
     }
     return Response(res_data)

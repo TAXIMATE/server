@@ -56,6 +56,34 @@ def kakao_login_dev(request):
 
     user = CustomUser.objects.filter(kakao_id=kakao_id).first()
     if user is not None:
+        if user.profile_image != profile_image:
+            user.profile_image = profile_image
+        if user.nickname != nickname:
+            user.nickname = nickname
+        user.save()
+        serializer = UserSerializer(user)
+        auth.login(request, user = user)
+        res = {
+            "msg" : "기존 사용자 로그인 성공",
+            "code" : "m-S002",
+            "data" : serializer.data
+        }
+        return Response(res)
+
+    new_user = CustomUser(kakao_id = kakao_id, profile_image = profile_image, nickname = nickname)
+    new_user.save()
+    serializer = UserSerializer(new_user)
+    auth.login(request, new_user)
+    res = {
+        "msg" : "신규 가입자, 로그인 성공",
+        "code" : "m-S001",
+        "data" : serializer.data
+    }
+    return Response(res)    
+        
+
+    """
+    if user is not None:
         # 프로필 사진이 바뀌었을 경우 적용
         if user.profile_image != profile_image:
             user.profile_image = profile_image
@@ -94,6 +122,7 @@ def kakao_login_dev(request):
         }
     }
     return Response(res_data)
+    """
 
 
 # 모든 사용자 리턴
