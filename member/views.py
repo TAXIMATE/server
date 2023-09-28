@@ -20,7 +20,7 @@ def kakao_login(request, code):
     data = {
         "grant_type" : "authorization_code",
         "client_id" : "d679f25e59dbc97619baf1256489b449",
-        "redirect_uri" : "http://localhost.3000/wait",
+        "redirect_uri" : "http://localhost:3000/wait",
         # "redirect_uri" : "http://127.0.0.1:8000/member/login/",
         # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
         # "code" : request.GET["code"]
