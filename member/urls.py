@@ -15,6 +15,6 @@ urlpatterns = [
     
     ## 개발자용 api
     path('kakao/', KakaoView.as_view()),
-    # path('login/', views_dev.kakao_login_dev),
+    path('login/', views_dev.kakao_login_dev),
     path('all/', views_dev.all_member),
 ]

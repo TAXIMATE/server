@@ -30,7 +30,7 @@ class KakaoView(View):
 
 
 # 백엔드 로그인용 콜백 api
-@api_view(['POST'])
+@api_view(['GET'])
 def kakao_login_dev(request):
     data = {
         "grant_type" : "authorization_code",
