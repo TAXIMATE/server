@@ -6,7 +6,7 @@ from .views_dev import *
 app_name = 'member'
 
 urlpatterns = [
-    path('login/', views.kakao_login),
+    path('login/<str:code>/', views.kakao_login),
     path('logout/', views.kakao_logout),
     path('gender/<str:gender>/', views.check_gender),
     path('information/', views.user_information),
