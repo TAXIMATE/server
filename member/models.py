@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class CustomUser(AbstractUser):
+    username = models.CharField(null=True, unique=False, max_length=20)
     kakao_id = models.BigIntegerField(unique=True, null = True)
     profile_image = models.TextField(default="", null = True)
     nickname = models.CharField(max_length=100, null = True)
