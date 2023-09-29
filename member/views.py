@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view, authentication_classes
 from django.db.models import Q
 from django.contrib import auth
 import requests
+from django.views import View
 import json
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
@@ -112,17 +113,6 @@ def kakao_login(request, code):
     # return Response(res_data)
 
 
-# 카카오 로그아웃
-@api_view(['POST'])
-def kakao_logout(request):
-    auth.logout(request)
-    data = {
-        "msg" : "로그아웃 성공",
-        "code" : "m-S003",
-    }
-    return Response(data)
-
-
 # 성별 선택
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
@@ -194,3 +184,25 @@ def rate_information(request, team_id):
             "data" : users
         }
     return Response(res)
+
+
+# class KakaoLogoutView(View):
+#     def get(self, request):
+#         kakao_api = "https://kauth.kakao.com/oauth/logout"
+#         # redirect_uri = "http://127.0.0.1:8000/member/login/"
+#         # redirect_uri = "http://localhost.3000/wait"
+#         redirect_uri = "http://127.0.0.1:8000/member/logout/"
+#         client_id = "d679f25e59dbc97619baf1256489b449"
+
+#         return redirect(f"{kakao_api}&client_id={client_id}&redirect_uri={redirect_uri}")
+
+
+# 서비스 로그아웃
+@api_view(['GET'])
+def kakao_logout(request):
+    auth.logout(request)
+    data = {
+        "msg" : "로그아웃 성공",
+        "code" : "m-S003",
+    }
+    return Response(data)
