@@ -9,6 +9,7 @@ class CustomUser(AbstractUser):
     nickname = models.CharField(max_length=100, null = True)
     gender = models.BooleanField(null=True)
     temperature = models.FloatField(default=36.5)
+    grade = models.CharField(max_length=20, default="silver")
 
     USERNAME_FIELD = 'kakao_id'
 
