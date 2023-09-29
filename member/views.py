@@ -198,7 +198,7 @@ def rate_information(request, team_id):
 
 
 # 서비스 로그아웃
-@api_view(['GET'])
+@api_view(['POST'])
 def kakao_logout(request):
     auth.logout(request)
     data = {
