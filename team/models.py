@@ -10,7 +10,7 @@ class Team(models.Model):
     start_time = models.DateTimeField(auto_now=False, auto_now_add=False)
     current_member = models.IntegerField(default=1)
     maximum_member = models.IntegerField()
-    state = models.IntegerField(default=0)
+    state = models.IntegerField(default=0) ## 0: 모집중, 1: 운행중, 2: 도착완료, 3: 모집취소
 
 
 class Comment(models.Model):
