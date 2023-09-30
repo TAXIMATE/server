@@ -168,3 +168,6 @@ DRF 브라우저 설정
 #         'rest_framework.renderers.JSONRenderer',
 #     )
 # }
+
+
+SESSION_COOKIE_SECURE = True
