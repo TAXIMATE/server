@@ -169,5 +169,8 @@ DRF 브라우저 설정
 #     )
 # }
 
-
+"""
+세션 로그인 관련
+"""
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_SECURE = True
