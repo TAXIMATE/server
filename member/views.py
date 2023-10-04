@@ -13,6 +13,8 @@ import requests
 from django.views import View
 import json
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from django.contrib.auth import login
 
 # Create your views here.
 # 카카오 로그인
@@ -32,10 +34,10 @@ def kakao_login(request, code):
     # access_token = requests.post(kakao_token_api, data = data).json()["access_token"]
     response = requests.post(kakao_token_api, data=data)
     res_data = response.json()
-    access_token = res_data.get("access_token")
+    kakao_access_token = res_data.get("access_token")
 
     kakao_user_api = "https://kapi.kakao.com/v2/user/me"
-    header = {"Authorization":f"Bearer ${access_token}"}
+    header = {"Authorization":f"Bearer ${kakao_access_token}"}
     user_information = requests.get(kakao_user_api, headers = header).json()
     
     kakao_id = user_information["id"]
@@ -50,22 +52,32 @@ def kakao_login(request, code):
             user.nickname = nickname
         user.save()
         serializer = UserSerializer(user)
-        auth.login(request, user = user)
+        login(request, user)
+        token = TokenObtainPairSerializer.get_token(user)
+        access_token = str(token.access_token)
         res = {
             "msg" : "기존 사용자 로그인 성공",
             "code" : "m-S002",
-            "data" : serializer.data
+            "data" : {
+                "user_data" : serializer.data,
+                "access_token" : access_token
+            }
         }
         return Response(res)
 
     new_user = CustomUser(kakao_id = kakao_id, profile_image = profile_image, nickname = nickname)
     new_user.save()
     serializer = UserSerializer(new_user)
-    auth.login(request, new_user)
+    login(request, new_user)
+    token = TokenObtainPairSerializer.get_token(new_user)
+    access_token = str(token.access_token)
     res = {
         "msg" : "신규 가입자, 로그인 성공",
         "code" : "m-S001",
-        "data" : serializer.data
+        "data" : {
+            "user_data" : serializer.data,
+            "access_token" : access_token
+        }
     }
     return Response(res)   
     

@@ -13,6 +13,8 @@ from django.contrib import auth
 import requests
 import json
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from django.contrib.auth import login
 
 """
 개발 편의를 위한 api
@@ -62,11 +64,17 @@ def kakao_login_dev(request):
             user.nickname = nickname
         user.save()
         serializer = UserSerializer(user)
-        auth.login(request, user = user)
+        login(request, user)
+        token = TokenObtainPairSerializer.get_token(user)
+        access_token = str(token.access_token)
         res = {
             "msg" : "기존 사용자 로그인 성공",
             "code" : "m-S002",
-            "data" : serializer.data
+            # "data" : serializer.data
+            "data" : {
+                "user_data" : serializer.data,
+                "access_token" : access_token
+            }
         }
         return Response(res)
 
@@ -77,7 +85,10 @@ def kakao_login_dev(request):
     res = {
         "msg" : "신규 가입자, 로그인 성공",
         "code" : "m-S001",
-        "data" : serializer.data
+        "data" : {
+            "user_data" : serializer.data,
+            "access_token" : access_token
+        }
     }
     return Response(res)    
         
