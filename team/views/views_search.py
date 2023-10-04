@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view, authentication_classes,permissio
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 import json
 from datetime import datetime
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # 현재 참가 가능한 팀 객체 리턴
 def available_teams():
@@ -36,7 +37,7 @@ def waiting_teams(request):
 
 # 역 이름으로 팀 검색
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def search_team(request):
     res = request.data
     start_station = res["start_station"]

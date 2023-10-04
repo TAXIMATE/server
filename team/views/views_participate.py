@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view, authentication_classes,permissio
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 import json
 from datetime import datetime
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # 현재 참가 가능한 팀 객체 리턴
 def available_teams():
@@ -22,7 +23,7 @@ def available_teams():
 # 팀 생성
 class Create_team(CreateAPIView):
     serializer_class = TeamCreateSerializer
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    authentication_classes = [JWTAuthentication]
 
     def create(self, request):
         user = self.request.user
@@ -69,7 +70,7 @@ class Create_team(CreateAPIView):
 
 # 팀 취소
 @api_view(['PUT'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def cancel_team(request, team_id):
     team = Team.objects.get(pk = team_id)
     if team.master_member != request.user:
@@ -92,7 +93,7 @@ def cancel_team(request, team_id):
 
 # 팀 참가
 @api_view(['PUT'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def participate_team(request, team_id):
     team = Team.objects.get(pk = team_id)
     user = request.user
@@ -155,7 +156,7 @@ def participate_team(request, team_id):
 
 # 팀 출발 상태로 변경
 @api_view(['PUT'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def team_start(request, team_id):
     team = Team.objects.get(pk = team_id)
     user = request.user

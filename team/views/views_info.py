@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view, authentication_classes,permissio
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 import json
 from datetime import datetime
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 # 팀 세부사항
@@ -37,7 +38,7 @@ def team_detail(request, team_id):
 
 # 유저가 속한 팀 반환
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def user_in_team(request):
     user = request.user
     now = datetime.now()

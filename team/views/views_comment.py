@@ -10,10 +10,11 @@ from rest_framework.decorators import api_view, authentication_classes,permissio
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 import json
 from datetime import datetime
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # 댓글 작성
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def create_comment(request, team_id):
     team = Team.objects.get(pk = team_id)
     user = request.user

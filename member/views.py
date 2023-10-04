@@ -14,6 +14,7 @@ from django.views import View
 import json
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth import login
 
 # Create your views here.
@@ -127,7 +128,7 @@ def kakao_login(request, code):
 
 # 성별 선택
 @api_view(['POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def check_gender(request, gender):
     if gender == "male":
         request.user.gender = True
@@ -153,7 +154,7 @@ def check_gender(request, gender):
 
 # 현재 유저 정보 반환
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def user_information(request):
     serializer = UserSimpleSerializer(request.user)
     data = serializer.data
@@ -173,7 +174,7 @@ def user_information(request):
 
 # 평가할 유저 정보 반환
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 def rate_information(request, team_id):
     user = request.user
     team = Team.objects.get(pk = team_id)
