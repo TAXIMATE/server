@@ -29,7 +29,7 @@ def waiting_teams(request):
         "msg" : "대기 중인 팀 수 조회에 성공",
         "code" : "t-S001",
         "data" : {
-            "teams" : num
+            "teams" : 10
         },
     }
     return Response(res)
