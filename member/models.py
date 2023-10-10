@@ -7,7 +7,7 @@ class CustomUser(AbstractUser):
     kakao_id = models.BigIntegerField(unique=True, null = True)
     profile_image = models.TextField(default="", null = True)
     nickname = models.CharField(max_length=100, null = True)
-    gender = models.BooleanField(null=True)
+    gender = models.CharField(max_length=10, null = True, default = None)
     temperature = models.FloatField(default=36.5)
     grade = models.CharField(max_length=20, default="silver")
 
