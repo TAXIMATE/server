@@ -131,14 +131,14 @@ def kakao_login(request, code):
 @authentication_classes([JWTAuthentication])
 def check_gender(request, gender):
     if gender == "male":
-        request.user.gender = True
+        request.user.gender = "male"
         request.user.save()
         data = {
             "msg" : "남성 선택",
             "code" : "m-S004",
         }
     elif gender == "female":
-        request.user.gender = False
+        request.user.gender = "female"
         request.user.save()
         data = {
             "msg" : "여성 선택",
