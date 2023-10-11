@@ -27,15 +27,22 @@ class Create_team(CreateAPIView):
 
     def create(self, request):
         user = self.request.user
+        now = datetime.now()
         # teams = available_teams()
         # if teams.filter(Q(usual_member = user)|Q(master_member = user)).exists():
-        if Team.objects.filter(
+        exist_team = Team.objects.filter(
             (Q(usual_member = user)|Q(master_member = user))
             &
-            (Q(state = 0)|Q(state = 1))):
+            Q(start_time__gt = now)
+            &
+            ~Q(state = 3)).first()
+        if exist_team:
             res = {
                 "msg" : "이미 팀에 소속된 사용자",
-                "code" : "t-F005"
+                "code" : "t-F005",
+                "data" : {
+                    "team_id" : exist_team.pk
+                }
             }
             return Response(res)
         time_str = request.data.get("start_time")
@@ -126,10 +133,19 @@ def participate_team(request, team_id):
     
     ## 방에 참여하지 않은 인원일 경우 (방에 참여하려는 경우)
     ## 이미 다른 방에 참여한 인원일 경우
-    if Team.objects.filter((Q(usual_member = user)|Q(master_member = user))&Q(start_time__gt = now)&Q(state__not = 3)).exists():
+    exist_team = Team.objects.filter(
+            (Q(usual_member = user)|Q(master_member = user))
+            &
+            Q(start_time__gt = now)
+            &
+            ~Q(state = 3)).first()
+    if exist_team:
         res = {
             "msg" : "이미 팀에 소속된 사용자",
-            "code" : "t-F003"
+            "code" : "t-F003",
+            "data" : {
+                "team_id" : exist_team.pk
+            }
         }
         return Response(res)
     ## 방 인원이 모두 찼을 경우
