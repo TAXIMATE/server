@@ -15,17 +15,20 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # 팀 세부사항
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
 def team_detail(request, team_id):
     team = Team.objects.get(pk = team_id)
     data = TeamDetailSerializer(team).data
     user = request.user
-    if team.master_member == user or team.usual_member == user:
-        exist_member = True
+    if team.master_member == user:
+        member_class = 2
+    elif team.usual_member.contains(user):
+        member_class = 1
     else:
-        exist_member = False
+        member_class = 0
     data = dict(data)
     data.update({"state" : team.state})
-    data.update({"exist_member" : exist_member})
+    data.update({"member_class" : member_class})
     res = {
         "msg" : "게시글 자세한 정보 불러오기 성공",
         "code" : "t-S005",
