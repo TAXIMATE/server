@@ -20,7 +20,7 @@ class TeamSimpleSerializer(serializers.ModelSerializer):
 class TeamCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
-        fields = ['id', 'master_member', 'start_station', 'arrival_station', 'start_time', 'maximum_member']
+        fields = ['id', 'start_station', 'arrival_station', 'start_time', 'maximum_member']
 
 
 # 팀 자세한 시리얼라이저
