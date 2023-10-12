@@ -18,6 +18,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 @authentication_classes([JWTAuthentication])
 def team_detail(request, team_id):
     team = Team.objects.get(pk = team_id)
+    team.start_time = team.start_time.strftime('%Y-%m-%dT%H:%M')
     data = TeamDetailSerializer(team).data
     user = request.user
     if team.master_member == user:
