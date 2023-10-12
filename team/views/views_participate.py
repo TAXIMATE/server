@@ -61,6 +61,8 @@ class Create_team(CreateAPIView):
         # team = Team.objects.get(master_member = user)
         # team_id = TeamIDSerializer(team).data["id"]
         team_id = serializer.data["id"]
+        team = Team.objects.get(pk = team_id)
+        team.start_time = team.start_time.strftime('%Y-%m-%dT%H:%M')
         res = {
             "msg" : "팀 생성 성공",
             "code" : "t-S002",
