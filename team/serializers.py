@@ -37,21 +37,10 @@ class TeamIDSerializer(serializers.ModelSerializer):
         model = Team
         fields = ['id']
 
-class CommentCreateSerializer(serializers.Serializer):
+class CommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['member', 'team', 'comment']
-
-    def create(self, validated_data):
-        # validated_data에서 필요한 데이터 추출
-        team = validated_data['team']
-        member = validated_data['member']
-
-        # 새로운 팀 댓글 객체 생성 및 저장
-        comment = Comment(team=team, member=member)
-        comment.save()
-
-        return comment
+        fields = ['comment']
 
 
 class CommentSerializer(serializers.ModelSerializer):
