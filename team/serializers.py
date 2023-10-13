@@ -45,6 +45,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     member = UserCommentSerializer()
+    created_at = serializers.TimeField(format="%H:%M")
     class Meta:
         model = Comment
         fields = ['member', 'comment', 'created_at']

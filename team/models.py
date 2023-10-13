@@ -17,4 +17,4 @@ class Comment(models.Model):
     member = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="comments")
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="comments")
     comment = models.CharField(max_length=100, blank = True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.TimeField(auto_now_add=True)
