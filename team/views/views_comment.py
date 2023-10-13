@@ -18,6 +18,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 def create_comment(request, team_id):
     team = Team.objects.get(pk = team_id)
     user = request.user
+    # now = datetime.now().strftime('%H:%M')
     serializer = CommentCreateSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save(team = team, member = user)
