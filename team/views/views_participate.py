@@ -193,3 +193,21 @@ def team_start(request, team_id):
     return Response(res)
 
 
+# 팀 도착 상태로 변경
+@api_view(['PUT'])
+@authentication_classes([JWTAuthentication])
+def team_arrive(request, team_id):
+    team = Team.objects.get(pk = team_id)
+    user = request.user
+    if team.master_member != user:
+        res = {
+            "msg" : "master_member가 아닌 사용자",
+            "code" : "t-F006"
+        }
+    else:
+        team.state = 2
+        team.save()
+        res = {
+            "msg" : "팀 도착 완료"
+        }
+    return Response(res)
