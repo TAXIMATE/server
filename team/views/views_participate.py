@@ -208,6 +208,7 @@ def team_arrive(request, team_id):
         team.state = 2
         team.save()
         res = {
-            "msg" : "팀 도착 완료"
+            "msg" : "팀 도착 완료",
+            "code" : "t-S018"
         }
     return Response(res)
