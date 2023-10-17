@@ -46,7 +46,7 @@ def team_detail(request, team_id):
 def user_in_team(request):
     user = request.user
     now = datetime.now()
-    team = Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)&Q(state__not = 3)).first()
+    team = Team.objects.filter((Q(master_member = user)|Q(usual_member = user))&Q(start_time__gt = now)&~Q(state = 3)).first()
     if team is not None:
         serializer = TeamSimpleSerializer(team)
         if team.master_member == user:
