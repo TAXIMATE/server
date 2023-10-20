@@ -112,7 +112,7 @@ def participate_team(request, team_id):
     if team.master_member == user or team.usual_member == user:
         ## 방장일 경우
         if team.master_member == user:
-            team.delete()
+            team.state = 3
             res = {
                 "msg" : "방장이 팀 탈퇴, 팀 해산",
                 "code" : "t-S003",
