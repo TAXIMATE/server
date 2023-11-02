@@ -35,7 +35,7 @@ class Create_team(CreateAPIView):
             &
             Q(start_time__gt = now)
             &
-            Q(state = 0) | Q(state = 1)
+            (Q(state = 0) | Q(state = 1))
             ).first()
         if exist_team:
             res = {
