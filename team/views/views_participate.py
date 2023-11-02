@@ -35,7 +35,8 @@ class Create_team(CreateAPIView):
             &
             Q(start_time__gt = now)
             &
-            ~Q(state = 3)).first()
+            (Q(state = 0) | Q(state = 1))
+            ).first()
         if exist_team:
             res = {
                 "msg" : "이미 팀에 소속된 사용자",
