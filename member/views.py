@@ -186,6 +186,8 @@ def rate_information(request, team_id):
     
     users = [u for u in users if u['kakao_id'] != user.kakao_id]
     if users == []:
+        team.state = 2
+        team.save()
         res = {
             "msg" : "평가 대상자 없음",
             "code" : "m-S008",
