@@ -221,3 +221,16 @@ def kakao_logout(request):
         "code" : "m-S003",
     }
     return Response(data)
+
+
+# 평가 반영
+@api_view(['POST'])
+@authentication_classes([JWTAuthentication])
+def reflect_rate(request, kakao_id):
+    user = CustomUser.objects.get(kakao_id = kakao_id)
+    
+    res = {
+        "msg" : "유저 평가 반영 성공",
+        "code" : "m-S008"
+    }
+    return Response(res)

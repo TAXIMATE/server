@@ -12,6 +12,7 @@ urlpatterns = [
     path('information/', views.user_information),
     # path('test/', views.test),
     path('rate/information/<int:team_id>/', views.rate_information),
+    path('rate/reflect/<int:kakao_id>/', views.reflect_rate),
     
     ## 개발자용 api
     path('kakao/', KakaoView.as_view()),
