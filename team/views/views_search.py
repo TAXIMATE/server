@@ -11,6 +11,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 import json
 from datetime import datetime
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from operator import attrgetter
 
 # 현재 참가 가능한 팀 객체 리턴
 def available_teams():
@@ -40,21 +41,35 @@ def waiting_teams(request):
 @authentication_classes([JWTAuthentication])
 def search_team(request):
     request_data = request.data
-    start_station = request_data['start_station']
-    arrival_station = request_data['arrival_station']
+    start_lst = request_data['start_station']
+    arrival_lst = request_data['arrival_station']
 
     teams = available_teams()
     
     data = []
-    for t in teams:
-        if t.start_station in start_station and t.arrival_station in arrival_station:
-            data.append(TeamSimpleSerializer(t).data)
+    for team in teams:
+        for s in start_lst:
+            if s in team.start_station:
+                for a in arrival_lst:
+                    if a in team.arrival_station:
+                        data.append(TeamSearchSerializer(team).data)
+                        break
+                break
     if data == []:
         res = {
             "msg" : "조건에 맞는 팀 없음",
             "code" : "t-S010"
         }
     else:
+        data = [dict(TeamSearchSerializer().to_internal_value(i)) for i in data]
+        
+        # for t in data:
+        #     t['start_time'] = datetime.strptime(t['start_time'], "%Y-%m-%dT%H:%M")
+
+        data.sort(key = lambda x : x['start_time'])
+
+        for t in data:
+            t['start_time'] = datetime.strftime(t['start_time'], "%H:%M")
         res = {
             "msg" : "역 이름으로 팀 검색 성공",
             "code" : "t-S008",
