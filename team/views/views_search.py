@@ -36,29 +36,17 @@ def waiting_teams(request):
 
 
 # 역 이름으로 팀 검색
-@api_view(['POST'])
+@api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 def search_team(request):
-    res = request.data
-    start_station = res["start_station"]
-    arrival_station = res["arrival_station"]
-    now = datetime.now()
-    # 검색 조건
-    # 출발역, 도착역, 출발시각
+    request_data = request.data
+    start_station = request_data['start_station']
+    arrival_station = request_data['arrival_station']
+
     teams = available_teams()
-    searched_teams = teams.filter(Q(start_station__contains = start_station)&Q(arrival_station__contains = arrival_station))
-    # teams = Team.objects.filter((Q(start_station__contains = start_station)&Q(arrival_station__contains = arrival_station))&Q(start_time__gt = now))
-    serializer = TeamSimpleSerializer(searched_teams, many = True)
-    data = serializer.data
-    if data == []:
-        res = {
-            "msg" : "조건에 맞는 팀 없음",
-            "code" : "t-S010"
-        }
-    else:
-        res = {
-            "msg" : "역 이름으로 팀 검색 성공",
-            "code" : "t-S008",
-            "data" : data
-        }
-    return Response(res)
+    
+    data = []
+    for t in teams:
+        if t.start_station in start_station and t.arrival_station in arrival_station:
+            data.append(TeamSimpleSerializer(t).data)
+    return Response(data)
