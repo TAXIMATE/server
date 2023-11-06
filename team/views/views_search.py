@@ -36,7 +36,7 @@ def waiting_teams(request):
 
 
 # 역 이름으로 팀 검색
-@api_view(['GET'])
+@api_view(['POST'])
 @authentication_classes([JWTAuthentication])
 def search_team(request):
     request_data = request.data
@@ -49,4 +49,15 @@ def search_team(request):
     for t in teams:
         if t.start_station in start_station and t.arrival_station in arrival_station:
             data.append(TeamSimpleSerializer(t).data)
-    return Response(data)
+    if data == []:
+        res = {
+            "msg" : "조건에 맞는 팀 없음",
+            "code" : "t-S010"
+        }
+    else:
+        res = {
+            "msg" : "역 이름으로 팀 검색 성공",
+            "code" : "t-S008",
+            "data" : data
+        }
+    return Response(res)
