@@ -41,20 +41,38 @@ def waiting_teams(request):
 @authentication_classes([JWTAuthentication])
 def search_team(request):
     request_data = request.data
-    start_lst = request_data['start_station']
-    arrival_lst = request_data['arrival_station']
+    start_lst = json.loads(request_data['start_station'])
+    arrival_lst = json.loads(request_data['arrival_station'])
 
     teams = available_teams()
     
-    data = []
-    for team in teams:
-        for s in start_lst:
-            if s in team.start_station:
-                for a in arrival_lst:
-                    if a in team.arrival_station:
-                        data.append(TeamSearchSerializer(team).data)
-                        break
-                break
+    if start_lst == [] and arrival_lst == []:
+        data = TeamSearchSerializer(teams, many = True).data
+    elif start_lst and arrival_lst:
+        data = []
+        for team in teams:
+            for s in start_lst:
+                if s in team.start_station:
+                    for a in arrival_lst:
+                        if a in team.arrival_station:
+                            data.append(TeamSearchSerializer(team).data)
+                            break
+                    break
+    elif start_lst and not arrival_lst:
+        data = []
+        for team in teams:
+            for s in start_lst:
+                if s in team.start_station:
+                    data.append(TeamSearchSerializer(team).data)
+                    break
+    else:
+        data = []
+        for team in teams:
+            for a in arrival_lst:
+                if a in team.arrival_station:
+                    data.append(TeamSearchSerializer(team).data)
+                    break
+
     if data == []:
         res = {
             "msg" : "조건에 맞는 팀 없음",
@@ -62,9 +80,6 @@ def search_team(request):
         }
     else:
         data = [dict(TeamSearchSerializer().to_internal_value(i)) for i in data]
-        
-        # for t in data:
-        #     t['start_time'] = datetime.strptime(t['start_time'], "%Y-%m-%dT%H:%M")
 
         data.sort(key = lambda x : x['start_time'])
 
