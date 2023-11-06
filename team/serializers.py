@@ -56,3 +56,10 @@ class TeamCommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = ['comments']
+
+
+# 팀 검색 결과 시리얼라이저
+class TeamSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = ['id', 'start_station', 'arrival_station', 'start_time', 'maximum_member', 'current_member']
