@@ -79,11 +79,13 @@ def search_team(request):
             "code" : "t-S010"
         }
     else:
-        data = [dict(TeamSearchSerializer().to_internal_value(i)) for i in data]
+        data = [dict(TeamSearchSerializer(i).data) for i in data]
 
         data.sort(key = lambda x : x['start_time'])
 
         for t in data:
+            if isinstance(t['start_time'], str):
+                t['start_time'] = datetime.strptime(t['start_time'], "%Y-%m-%dT%H:%M:%S")
             t['start_time'] = datetime.strftime(t['start_time'], "%H:%M")
         res = {
             "msg" : "역 이름으로 팀 검색 성공",
