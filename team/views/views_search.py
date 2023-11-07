@@ -41,8 +41,8 @@ def waiting_teams(request):
 @authentication_classes([JWTAuthentication])
 def search_team(request):
     request_data = request.data
-    start_lst = json.loads(request_data['start_station'])
-    arrival_lst = json.loads(request_data['arrival_station'])
+    start_lst = request_data.get('start_station', [])
+    arrival_lst = request_data.get('arrival_station', [])
 
     teams = available_teams()
     
