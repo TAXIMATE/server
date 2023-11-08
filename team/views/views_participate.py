@@ -136,18 +136,14 @@ def participate_team(request, team_id):
     
     ## 방에 참여하지 않은 인원일 경우 (방에 참여하려는 경우)
     ## 이미 다른 방에 참여한 인원일 경우
-    exist_team = Team.objects.filter(
-            (Q(usual_member = user)|Q(master_member = user))
-            &
-            Q(start_time__gt = now)
-            &
-            ~(Q(state = 3)|Q(state = 2))
-    if exist_team:
+    teams = available_teams()
+    my_team = teams.filter(usual_member = user)
+    if my_team:
         res = {
             "msg" : "이미 팀에 소속된 사용자",
             "code" : "t-F003",
             "data" : {
-                "team_id" : exist_team.pk
+                "team_id" : my_team.first().pk
             }
         }
         return Response(res)
