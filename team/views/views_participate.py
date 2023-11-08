@@ -110,7 +110,7 @@ def participate_team(request, team_id):
     now = datetime.now()
     
     ## 방에 참여한 인원일 경우 (방에서 퇴장하는 경우)
-    if team.master_member == user or team.usual_member == user:
+    if team.master_member == user or team.usual_member.filter(kakao_id = user.kakao_id).exists():
         ## 방장일 경우
         if team.master_member == user:
             team.state = 3
