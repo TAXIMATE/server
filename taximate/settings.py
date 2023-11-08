@@ -141,7 +141,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://127.0.0.1:8000",
-    "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app"]
+    "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app",
+    "https://taximate-nine.vercel.app",]
 
 
 CORS_ALLOW_CREDENTIALS = True
@@ -156,7 +157,10 @@ pymysql.install_as_MySQLdb()
 
 AUTH_USER_MODEL = 'member.CustomUser'
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", 'https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app']
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    'https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app'
+    'https://taximate-nine.vercel.app']
 
 
 
