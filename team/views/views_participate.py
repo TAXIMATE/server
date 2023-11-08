@@ -141,7 +141,7 @@ def participate_team(request, team_id):
             &
             Q(start_time__gt = now)
             &
-            ~(Q(state = 3)|Q(state = 2).first()
+            ~(Q(state = 3)|Q(state = 2)).first()
     if exist_team:
         res = {
             "msg" : "이미 팀에 소속된 사용자",
