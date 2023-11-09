@@ -21,13 +21,13 @@ from django.contrib.auth import login
 # 카카오 로그인
 @api_view(['GET'])
 def kakao_login(request, code):
-    absolute_uri = request.build_absolute_uri()
-    if "localhost:3000" in absolute_uri:
+    referer = request.META.get('HTTP_REFERER', '')
+    if "localhost:3000" in referer:
         data = {
             "grant_type" : "authorization_code",
             "client_id" : "d679f25e59dbc97619baf1256489b449",
             # "redirect_uri" : "https://taximate-nine.vercel.app/wait",
-            "redirect_uri" : "http://127.0.0.1:8000/member/login/",
+            "redirect_uri" : "http://localhost:3000/wait",
             # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
             # "code" : request.GET["code"]
             "code" : code
