@@ -21,15 +21,27 @@ from django.contrib.auth import login
 # 카카오 로그인
 @api_view(['GET'])
 def kakao_login(request, code):
-    data = {
-        "grant_type" : "authorization_code",
-        "client_id" : "d679f25e59dbc97619baf1256489b449",
-        "redirect_uri" : "https://taximate-nine.vercel.app/wait",
-        # "redirect_uri" : "http://127.0.0.1:8000/member/login/",
-        # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
-        # "code" : request.GET["code"]
-        "code" : code
-    }
+    referer = request.META.get('HTTP_REFERER', '')
+    if "localhost:3000" in referer:
+        data = {
+            "grant_type" : "authorization_code",
+            "client_id" : "d679f25e59dbc97619baf1256489b449",
+            # "redirect_uri" : "https://taximate-nine.vercel.app/wait",
+            "redirect_uri" : "http://localhost:3000/wait",
+            # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
+            # "code" : request.GET["code"]
+            "code" : code
+        }
+    else:
+        data = {
+            "grant_type" : "authorization_code",
+            "client_id" : "d679f25e59dbc97619baf1256489b449",
+            "redirect_uri" : "https://taximate-nine.vercel.app/wait",
+            # "redirect_uri" : "http://127.0.0.1:8000/member/login/",
+            # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
+            # "code" : request.GET["code"]
+            "code" : code
+        }
 
     kakao_token_api = "https://kauth.kakao.com/oauth/token"
     # access_token = requests.post(kakao_token_api, data = data).json()["access_token"]
@@ -81,49 +93,6 @@ def kakao_login(request, code):
         }
     }
     return Response(res)   
-    
-    
-    # if user is not None:
-    #     # 프로필 사진이 바뀌었을 경우 적용
-    #     if user.profile_image != profile_image:
-    #         user.profile_image = profile_image
-    #         user.save()
-    #     # 닉네임이 바뀌었을 경우 적용
-    #     if user.nickname != nickname:
-    #         user.nickname = nickname
-    #         user.save()
-    #     if user.gender != None:
-    #         auth.login(request, user=user)
-    #         # serializer = UserSimpleSerializer(user)
-    #         res_data = {
-    #             "msg" : "기존 사용자 로그인 성공",
-    #             "code" : "m-S002",
-    #             "data" : {
-    #                 "gender_needed" : True
-    #             }
-    #         }
-    #         return Response(res_data)
-    #     else:
-    #         auth.login(request, user = user)
-    #         res_data = {
-    #             "msg" : "신규 가입자 로그인 성공",
-    #             "code" : "m-S001",
-    #             "data" : {
-    #                 "gender_needed" : False
-    #             }
-    #         }
-    #         return Response(res_data)
-    # new_user = CustomUser(kakao_id = kakao_id, profile_image = profile_image, nickname = nickname)
-    # new_user.save()
-    # auth.login(request, new_user)
-    # res_data = {
-    #     "msg" : "신규 가입자, 로그인 성공",
-    #     "code" : "m-S001",
-    #     "data" : {
-    #         "gender_needed" : False
-    #     }
-    # }
-    # return Response(res_data)
 
 
 # 성별 선택
