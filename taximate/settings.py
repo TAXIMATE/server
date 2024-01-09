@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-g#$w5&%m&yc4aa_3n7hfv9lcaqmhp6vywlnwl-r(970h!js4q7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app', '127.0.0.1']
+ALLOWED_HOSTS = ['port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app', '127.0.0.1', '13.124.241.62']
 
 
 # Application definition
@@ -143,7 +143,9 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:8000",
     "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app",
     "https://taximate-nine.vercel.app",
-    "https://taximate-alpha.vercel.app",]
+    "https://taximate-alpha.vercel.app",
+    '13.124.241.62',
+    ]
 
 
 CORS_ALLOW_CREDENTIALS = True
@@ -160,7 +162,8 @@ AUTH_USER_MODEL = 'member.CustomUser'
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
-    'https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app'
+    'https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app',
+    '13.124.241.62',
     'https://taximate-nine.vercel.app',
     "https://taximate-alpha.vercel.app",]
 
