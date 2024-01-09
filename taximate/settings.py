@@ -144,7 +144,7 @@ CORS_ORIGIN_WHITELIST = [
     "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app",
     "https://taximate-nine.vercel.app",
     "https://taximate-alpha.vercel.app",
-    '13.124.241.62',
+    'http://13.124.241.62',
     ]
 
 
@@ -163,7 +163,7 @@ AUTH_USER_MODEL = 'member.CustomUser'
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     'https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app',
-    '13.124.241.62',
+    'http://13.124.241.62',
     'https://taximate-nine.vercel.app',
     "https://taximate-alpha.vercel.app",]
 
