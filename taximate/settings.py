@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-g#$w5&%m&yc4aa_3n7hfv9lcaqmhp6vywlnwl-r(970h!js4q7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app', '127.0.0.1', '13.124.241.62']
+ALLOWED_HOSTS = ['port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app', '127.0.0.1', '13.124.241.62', '.herokuapp.com']
 
 
 # Application definition
@@ -78,13 +79,33 @@ WSGI_APPLICATION = 'taximate.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+"""
+로컬 DB
+"""
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+"""
+헤로쿠 DB
+"""
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'djangogirls',
+        'USER': 'name',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
+"""
+클라우드타입 DB
+"""
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql', 
@@ -242,3 +263,7 @@ SIMPLE_JWT = {
     'TOKEN_TYPE_CLAIM': 'token_type',
     'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
 }
+
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
