@@ -15,6 +15,7 @@ import json
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from django.contrib.auth import login
+from decouple import config
 
 """
 개발 편의를 위한 api
@@ -26,7 +27,7 @@ class KakaoView(View):
         redirect_uri = "http://127.0.0.1:8000/member/login/"
         # redirect_uri = "http://localhost.3000/wait"
         # redirect_uri = "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/"
-        client_id = "d679f25e59dbc97619baf1256489b449"
+        client_id = config('client_id')
 
         return redirect(f"{kakao_api}&client_id={client_id}&redirect_uri={redirect_uri}")
 
@@ -36,7 +37,7 @@ class KakaoView(View):
 def kakao_login_dev(request):
     data = {
         "grant_type" : "authorization_code",
-        "client_id" : "d679f25e59dbc97619baf1256489b449",
+        "client_id" : config('client_id'),
         # "redirect_uri" : "http://localhost.3000/wait",
         "redirect_uri" : "http://127.0.0.1:8000/member/login/",
         # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",

@@ -16,6 +16,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth import login
+from decouple import config
 
 # Create your views here.
 # 카카오 로그인
@@ -25,7 +26,7 @@ def kakao_login(request, code):
     if "localhost:3000" in referer:
         data = {
             "grant_type" : "authorization_code",
-            "client_id" : "d679f25e59dbc97619baf1256489b449",
+            "client_id" : config('client_id'),
             # "redirect_uri" : "https://taximate-nine.vercel.app/wait",
             "redirect_uri" : "http://localhost:3000/wait",
             # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
@@ -35,7 +36,7 @@ def kakao_login(request, code):
     else:
         data = {
             "grant_type" : "authorization_code",
-            "client_id" : "d679f25e59dbc97619baf1256489b449",
+            "client_id" : config('client_id'),
             "redirect_uri" : "https://taximate-alpha.vercel.app/wait",
             # "redirect_uri" : "http://127.0.0.1:8000/member/login/",
             # "redirect_uri" : "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app/member/login/",
