@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app', '127.0.0.1', '13.124.241.62', '.herokuapp.com']
+ALLOWED_HOSTS = ['port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app', '13.124.241.62']
 
 
 # Application definition
@@ -84,40 +84,18 @@ WSGI_APPLICATION = 'taximate.wsgi.application'
 """
 로컬 DB
 """
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-"""
-헤로쿠 DB
-"""
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangogirls',
-        'USER': 'name',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 """
 클라우드타입 DB
 """
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql', 
-#         'NAME': 'taximate',
-#         'USER': 'root',
-#         'PASSWORD': 'wjdtjq98',
-#         'HOST': 'svc.sel5.cloudtype.app',
-#         'PORT': '30201'
-#     }
-# }
+# DATABASES = config('cloudtype_db)
 
 
 # Password validation
@@ -163,7 +141,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
-    "http://127.0.0.1:8000",
     "https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app",
     "https://taximate-nine.vercel.app",
     "https://taximate-alpha.vercel.app",
@@ -270,3 +247,8 @@ SIMPLE_JWT = {
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
