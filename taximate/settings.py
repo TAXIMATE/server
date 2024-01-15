@@ -172,11 +172,11 @@ CSRF_TRUSTED_ORIGINS = [
 """
 DRF 브라우저 설정
 """
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     )
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
 
 """
 JWT 로그인 관련
