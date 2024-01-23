@@ -179,7 +179,9 @@ CSRF_TRUSTED_ORIGINS = [
     'https://port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app',
     'http://13.124.241.62',
     'https://taximate-nine.vercel.app',
-    "https://taximate-alpha.vercel.app",]
+    "https://taximate-alpha.vercel.app",
+    "http://http://hufsmeals.shop",
+    "http://158.179.171.230",]
 
 
 
