@@ -83,10 +83,24 @@ WSGI_APPLICATION = 'taximate.wsgi.application'
 """
 로컬 DB
 """
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+"""
+도커 Mysql
+"""
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default' : {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'hufsmeals',
+        'USER': 'root',
+        'PASSWORD': config('db_password'),
+        'HOST': 'mysql_db',
+        'PORT': '3306',
     }
 }
 
