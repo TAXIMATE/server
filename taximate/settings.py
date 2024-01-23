@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app', '13.124.241.62']
+ALLOWED_HOSTS = ['*', 'port-0-server-2rrqq2blmoc3kpx.sel5.cloudtype.app', '13.124.241.62']
 
 
 # Application definition
@@ -159,6 +159,7 @@ CORS_ORIGIN_WHITELIST = [
     "https://taximate-nine.vercel.app",
     "https://taximate-alpha.vercel.app",
     'http://13.124.241.62',
+    '*'
     ]
 
 
