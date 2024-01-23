@@ -159,7 +159,7 @@ CORS_ORIGIN_WHITELIST = [
     "https://taximate-nine.vercel.app",
     "https://taximate-alpha.vercel.app",
     'http://13.124.241.62',
-    "http://http://hufsmeals.shop",
+    "http://hufsmeals.shop",
     "http://158.179.171.230",
     ]
 
